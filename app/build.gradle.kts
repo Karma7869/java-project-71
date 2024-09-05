@@ -36,7 +36,7 @@ tasks.test {
 }
 
 the<JacocoPluginExtension>().apply {
-    toolVersion = "0.8.7"
+    toolVersion = "0.8.12"
 }
 
 tasks.named<JacocoReport>("jacocoTestReport") {
