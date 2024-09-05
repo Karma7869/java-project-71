@@ -1,7 +1,10 @@
+import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
+
 plugins {
     id("java")
     id ("application")
     id ("checkstyle")
+    id("jacoco")
 }
 
 group = "hexlet.code"
@@ -29,4 +32,17 @@ tasks.withType<Checkstyle> {
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy("jacocoTestReport")
+}
+
+the<JacocoPluginExtension>().apply {
+    toolVersion = "0.8.7"
+}
+
+tasks.named<JacocoReport>("jacocoTestReport") {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
 }
