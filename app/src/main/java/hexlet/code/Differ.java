@@ -1,24 +1,21 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.io.File;
-import java.util.Map;
 
 public class Differ {
 
-    public static Map<String, Object> readJsonFile(String filepath) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(new File(filepath), Map.class);
-    }
 
-    public static String generate(String filepath1, String filepath2) throws Exception {
-        Map<String, Object> data1 = readJsonFile(filepath1);
-        Map<String, Object> data2 = readJsonFile(filepath2);
+    public static String generate(String filepath1, String filepath2) throws IOException {
+
+        Map<String, Object> data1 = Parser.parse(filepath1);
+        Map<String, Object> data2 = Parser.parse(filepath2);
 
         return buildDiff(data1, data2);
     }
+
 
     private static String buildDiff(Map<String, Object> data1, Map<String, Object> data2) {
         Set<String> allKeys = new TreeSet<>(data1.keySet());
@@ -29,6 +26,7 @@ public class Differ {
         for (String key : allKeys) {
             Object value1 = data1.get(key);
             Object value2 = data2.get(key);
+
 
             if (!data2.containsKey(key)) {
                 result.append("  - ").append(key).append(": ").append(valueToString(value1)).append("\n");
@@ -45,6 +43,7 @@ public class Differ {
         result.append("}");
         return result.toString();
     }
+
 
     private static String valueToString(Object value) {
         return value instanceof String ? "\"" + value + "\"" : value.toString();

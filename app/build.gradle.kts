@@ -22,7 +22,8 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation ("info.picocli:picocli:4.7.6")
-    implementation ("com.fasterxml.jackson.core:jackson-databind:2.13.1")
+    implementation ("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    implementation ("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.2")
 }
 
 tasks.withType<Checkstyle> {
