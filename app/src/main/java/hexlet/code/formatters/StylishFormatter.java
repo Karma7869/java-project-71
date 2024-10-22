@@ -1,23 +1,24 @@
 package hexlet.code.formatters;
 
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class StylishFormatter {
 
     public static String format(Map<String, Object> diff) {
         StringBuilder result = new StringBuilder("{\n");
 
-        Set<String> allKeys = new TreeSet<>(diff.keySet());
+        for (Map.Entry<String, Object> entry : diff.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
 
-        for (String key : allKeys) {
-            Object value = diff.get(key);
-
-            if (value instanceof Map) {
-                result.append(formatNestedStructure(key, (Map<String, Object>) value));
+            if (key.startsWith("-") || key.startsWith("+")) {
+                char prefix = key.charAt(0);
+                String actualKey = key.substring(1);
+                String prefixSymbol = prefix == '-' ? "- " : "+ ";
+                result.append("  ").append(prefixSymbol).append(actualKey).append(": ")
+                        .append(formatValue(value, 1)).append("\n");
             } else {
-                result.append("    ").append(key).append(": ").append(value).append("\n");
+                result.append("    ").append(key).append(": ").append(formatValue(value, 1)).append("\n");
             }
         }
 
@@ -25,15 +26,30 @@ public class StylishFormatter {
         return result.toString();
     }
 
-    private static String formatNestedStructure(String key, Map<String, Object> nestedValue) {
-        StringBuilder nestedResult = new StringBuilder();
-        nestedResult.append("    ").append(key).append(": {\n");
-
-        for (Map.Entry<String, Object> entry : nestedValue.entrySet()) {
-            nestedResult.append("        ").append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+    private static String formatValue(Object value, int depth) {
+        if (value == null) {
+            return "null"; // Добавляем обработку для null значений
         }
+        if (value instanceof Map) {
+            return formatNestedStructureInOneLine((Map<String, Object>) value, depth + 1);
+        }
+        return value.toString();
+    }
 
-        nestedResult.append("    }\n");
-        return nestedResult.toString();
+    // Изменяем этот метод для вывода в одну строку
+    private static String formatNestedStructureInOneLine(Map<String, Object> map, int indentLevel) {
+        StringBuilder formatted = new StringBuilder("{");
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            formatted.append(entry.getKey())
+                    .append("=")
+                    .append(entry.getValue())
+                    .append(", ");
+        }
+        // Удаляем последнюю запятую и пробел
+        if (formatted.length() > 1) {
+            formatted.setLength(formatted.length() - 2);
+        }
+        formatted.append("}");
+        return formatted.toString();
     }
 }
