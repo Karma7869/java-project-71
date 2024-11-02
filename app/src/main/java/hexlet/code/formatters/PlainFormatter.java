@@ -14,10 +14,12 @@ public class PlainFormatter {
             if (key.startsWith("-") && !diff.containsKey("+" + key.substring(1))) {
                 result.append("Property '").append(key.substring(1)).append("' was removed").append("\n");
             } else if (key.startsWith("+") && !diff.containsKey("-" + key.substring(1))) {
-                result.append("Property '").append(key.substring(1)).append("' was added with value: ").append(formatValue(value)).append("\n");
+                result.append("Property '").append(key.substring(1))
+                        .append("' was added with value: ").append(formatValue(value)).append("\n");
             } else if (key.startsWith("-") && diff.containsKey("+" + key.substring(1))) {
                 Object newValue = diff.get("+" + key.substring(1));
-                result.append("Property '").append(key.substring(1)).append("' was updated. From ").append(formatValue(value))
+                result.append("Property '").append(key.substring(1))
+                        .append("' was updated. From ").append(formatValue(value))
                         .append(" to ").append(formatValue(newValue)).append("\n");
             }
         }
