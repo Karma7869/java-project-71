@@ -1,5 +1,11 @@
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
 plugins {
     id("java")
     id ("application")

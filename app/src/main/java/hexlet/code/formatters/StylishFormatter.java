@@ -28,7 +28,7 @@ public class StylishFormatter {
 
     private static String formatValue(Object value, int depth) {
         if (value == null) {
-            return "null"; // Добавляем обработку для null значений
+            return "null";
         }
         if (value instanceof Map) {
             return formatNestedStructureInOneLine((Map<String, Object>) value, depth + 1);
@@ -36,7 +36,6 @@ public class StylishFormatter {
         return value.toString();
     }
 
-    // Изменяем этот метод для вывода в одну строку
     private static String formatNestedStructureInOneLine(Map<String, Object> map, int indentLevel) {
         StringBuilder formatted = new StringBuilder("{");
         for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -45,7 +44,6 @@ public class StylishFormatter {
                     .append(entry.getValue())
                     .append(", ");
         }
-        // Удаляем последнюю запятую и пробел
         if (formatted.length() > 1) {
             formatted.setLength(formatted.length() - 2);
         }
